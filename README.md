@@ -1,5 +1,7 @@
 # @saber2pr/request
 
+[![npm](https://img.shields.io/npm/v/@saber2pr/request.svg?color=blue)](https://www.npmjs.com/package/@saber2pr/request)
+
 > 提供全局拦截器配置
 
 `[size]: [6.51kb]`

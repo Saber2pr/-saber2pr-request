@@ -45,7 +45,6 @@ export default class Request {
       XHR.timeout = timeout
       XHR.addEventListener('timeout', () => onTimeout(`[timeout]: ${timeout}`))
     } else {
-      console.log(Timeout, this.config.timeout)
       setTimeout(() => onTimeout(`[timeout]: ${timeout}`), timeout)
     }
   }
