@@ -2,7 +2,7 @@
  * @Author: saber2pr 
  * @Date: 2019-05-03 21:16:23 
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-03 22:43:18
+ * @Last Modified time: 2019-05-03 23:19:44
  */
 const {
   Koa
@@ -57,4 +57,4 @@ Koa().use(async (ctx, next) => {
     }))
     await next()
   })
-  .listen(3000, () => console.log('http://localhost:3000'))
+  .listen(3000, () => console.log('listening...'))

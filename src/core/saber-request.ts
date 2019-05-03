@@ -2,7 +2,7 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:34:18
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-03 23:05:09
+ * @Last Modified time: 2019-05-03 23:21:56
  */
 import { HeaderNames } from './headers'
 import { getXHR } from './XMLHttpRequest'
@@ -14,14 +14,16 @@ import { ResponseConfig } from './configTypes/responseConfig'
 export default class Request {
   public constructor()
   public constructor(config: RequestConfig)
-  public constructor(
-    private config: Readonly<RequestConfig> = {
-      baseURL: '',
-      headers: {},
-      timeout: 5000,
-      method: 'GET'
-    }
-  ) {}
+  public constructor(config: RequestConfig = {}) {
+    Object.assign(this.config, config)
+  }
+
+  private config: Readonly<RequestConfig> = {
+    baseURL: '',
+    headers: {},
+    timeout: 5000,
+    method: 'GET'
+  }
 
   public interceptors = new Interceptor()
 
@@ -39,8 +41,13 @@ export default class Request {
     onTimeout: (reason: string) => void
   ) {
     const timeout = Timeout || this.config.timeout
-    XHR.timeout = timeout
-    XHR.addEventListener('timeout', () => onTimeout(`[timeout]: ${timeout}`))
+    if (XHR.timeout) {
+      XHR.timeout = timeout
+      XHR.addEventListener('timeout', () => onTimeout(`[timeout]: ${timeout}`))
+    } else {
+      console.log(Timeout, this.config.timeout)
+      setTimeout(() => onTimeout(`[timeout]: ${timeout}`), timeout)
+    }
   }
 
   private async useRequestInterceptors(
