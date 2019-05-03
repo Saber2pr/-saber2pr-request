@@ -15,9 +15,20 @@
   "main": "./lib/index.js",
   "scripts": {
     "start": "tsc --watch",
-    "test": "node ./lib/test/test.js"
+    "dev": "rollup -c --watch",
+    "serve": "node ./example/serve.js"
   },
+  "keywords": [
+    "xhr",
+    "ajax",
+    "typescript",
+    "http"
+  ],
   "devDependencies": {
+    "@saber2pr/koa": "0.0.9",
+    "rollup": "^1.1.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-uglify": "^6.0.2",
     "typescript": "^3.2.1"
   }
 }

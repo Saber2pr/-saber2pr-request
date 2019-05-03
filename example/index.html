@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../dist/request.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const request = new Request({
+      baseURL: 'http://localhost:3000'
+    })
+
+    request.interceptors.request.use(result => {
+      console.log('[request1: interceptor]', result)
+      return result
+    })
+
+    request.interceptors.request.use(result => {
+      console.log('[request2: interceptor]', result)
+      return result
+    })
+
+    request.interceptors.response.use(result => {
+      console.log('[response1: interceptor]', result)
+      return result
+    })
+
+    request.interceptors.response.use(result => {
+      console.log('[response2: interceptor]', result)
+      return result
+    })
+
+    request.get('/get').then(console.log).catch(err => console.error(err))
+    request.post('/post').then(console.log).catch(err => console.error(err))
+    request.put('/put').then(console.log).catch(err => console.error(err))
+    request.delete('/delete').then(console.log).catch(err => console.error(err))
+
+    console.log(request)
+  </script>
+</body>
+
+</html>
