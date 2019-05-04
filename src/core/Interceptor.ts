@@ -25,9 +25,7 @@ export class InterceptorFactory<T> {
 export class Interceptor {
   public constructor(
     public requestInterceptors = new InterceptorFactory<RequestConfig>(),
-    public responseInterceptors = new InterceptorFactory<
-      ResponseConfig<any> | PromiseLike<ResponseConfig<any>>
-    >()
+    public responseInterceptors = new InterceptorFactory<ResponseConfig<any>>()
   ) {}
 
   public request = {
@@ -36,7 +34,7 @@ export class Interceptor {
   }
 
   public response = {
-    use: <T>(interceptor: interceptor<ResponseConfig<T> | PromiseLike<ResponseConfig<T>>>) =>
+    use: <T>(interceptor: interceptor<ResponseConfig<T>>) =>
       this.responseInterceptors.use(interceptor)
   }
 }

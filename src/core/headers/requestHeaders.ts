@@ -2,9 +2,9 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:21:02
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-03 18:47:21
+ * @Last Modified time: 2019-05-04 09:30:20
  */
-export type HeaderNames =
+export type RequestHeaderNames =
   | 'Accept'
   | 'Accept-Charset'
   | 'Accept-Encoding'
@@ -54,28 +54,3 @@ export type HeaderNames =
   | 'X-XSRF-TOKEN'
   | 'X-Request-ID'
   | 'X-Correlation-ID'
-
-export namespace Header {
-  export function append(headers: Headers, name: HeaderNames, value: string) {
-    headers.append(name, value)
-  }
-  export function deleteHeader(headers: Headers, name: HeaderNames) {
-    headers.delete(name)
-  }
-  export function forEach(
-    headers: Headers,
-    callbackfn: (value: string, key: HeaderNames, parent: Headers) => void,
-    thisArg?: any
-  ) {
-    headers.forEach(callbackfn, thisArg)
-  }
-  export function get(headers: Headers, name: HeaderNames) {
-    return headers.get(name)
-  }
-  export function has(headers: Headers, name: HeaderNames) {
-    return headers.has(name)
-  }
-  export function set(headers: Headers, name: HeaderNames, value: string) {
-    headers.set(name, value)
-  }
-}

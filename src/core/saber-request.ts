@@ -4,7 +4,7 @@
  * @Last Modified by: saber2pr
  * @Last Modified time: 2019-05-03 23:21:56
  */
-import { HeaderNames } from './headers'
+import { RequestHeaderNames } from './headers/requestHeaders'
 import { getXHR } from './XMLHttpRequest'
 import { Params } from './utils/stringify'
 import { RequestConfig } from './configTypes/requestConfig'
@@ -29,7 +29,7 @@ export class Request {
 
   private setHeaders(
     XHR: XMLHttpRequest,
-    Headers: Partial<Record<HeaderNames, string>> = {}
+    Headers: Partial<Record<RequestHeaderNames, string>> = {}
   ) {
     const headers = Object.assign(Headers, this.config.headers)
     Object.entries(headers).forEach(([k, v]) => XHR.setRequestHeader(k, v))
