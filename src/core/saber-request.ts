@@ -2,7 +2,7 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:34:18
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-04 10:11:17
+ * @Last Modified time: 2019-05-04 11:18:52
  */
 import { RequestHeaderNames } from './headers/requestHeaders'
 import { getXHR } from './XMLHttpRequest'
@@ -97,13 +97,8 @@ export class Request {
     return this.useResponseInterceptors(
       new Promise<ResponseConfig<T>>((resolve, reject) => {
         const xhr = getXHR(resolve, reject)
-        this.setCredentials(xhr, config.withCredentials)
 
         let target = this.config.baseURL + url
-
-        this.setHeaders(xhr, resolveConfig.headers)
-        this.setTimeout(xhr, resolveConfig.timeout, reject)
-
         if (Object.keys(resolveConfig.data).length) {
           const urlParams = Params.stringify(resolveConfig.data)
           if (url.includes('?')) {
@@ -112,8 +107,12 @@ export class Request {
             target += `?${urlParams}`
           }
         }
-
         xhr.open(config.method, target)
+
+        this.setCredentials(xhr, config.withCredentials)
+        this.setHeaders(xhr, resolveConfig.headers)
+        this.setTimeout(xhr, resolveConfig.timeout, reject)
+
         xhr.send()
       })
     )
@@ -129,19 +128,18 @@ export class Request {
     return this.useResponseInterceptors(
       new Promise<ResponseConfig<T>>((resolve, reject) => {
         const xhr = getXHR(resolve, reject)
-        this.setCredentials(xhr, config.withCredentials)
 
         const target = this.config.baseURL + url
-
-        this.setHeaders(xhr, resolveConfig.headers)
-        this.setTimeout(xhr, resolveConfig.timeout, reject)
-
         let body = null
         if (resolveConfig.data) {
           body = JSON.stringify(resolveConfig.data)
         }
-
         xhr.open(config.method || this.config.method, target)
+
+        this.setCredentials(xhr, config.withCredentials)
+        this.setHeaders(xhr, resolveConfig.headers)
+        this.setTimeout(xhr, resolveConfig.timeout, reject)
+
         xhr.send(body)
       })
     )
