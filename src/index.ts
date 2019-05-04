@@ -1,1 +1,1 @@
-export * from './core/saber-request'
+export { Request as default } from './core/saber-request'

@@ -11,7 +11,7 @@ import { RequestConfig } from './configTypes/requestConfig'
 import { Interceptor } from './Interceptor'
 import { ResponseConfig } from './configTypes/responseConfig'
 
-export default class Request {
+export class Request {
   public constructor()
   public constructor(config: RequestConfig)
   public constructor(config: RequestConfig = {}) {
