@@ -2,14 +2,15 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:34:18
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-04 11:18:52
+ * @Last Modified time: 2019-05-04 21:17:32
  */
 import { RequestHeaderNames } from './headers/requestHeaders'
 import { getXHR } from './XMLHttpRequest'
-import { Params } from './utils/stringify'
+import { stringify } from './utils/stringify'
 import { RequestConfig } from './configTypes/requestConfig'
 import { Interceptor } from './Interceptor'
 import { ResponseConfig } from './configTypes/responseConfig'
+import { preserve } from './utils/preserve'
 
 export class Request {
   public constructor()
@@ -62,11 +63,9 @@ export class Request {
   private async useRequestInterceptors(
     config: RequestConfig
   ): Promise<RequestConfig> {
-    const value = await Promise.resolve(config)
-
     return this.interceptors.requestInterceptors.interceptors.reduce(
       (pre, cur) => cur(pre),
-      value
+      config
     )
   }
 
@@ -88,8 +87,9 @@ export class Request {
   ): Promise<ResponseConfig<T>>
   public async get<T>(
     url: string,
-    config: RequestConfig = Object.assign({}, this.config)
+    config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
+    preserve(config, this.config)
     config.method = 'GET'
     config.url = url
     const resolveConfig = await this.useRequestInterceptors(config)
@@ -100,7 +100,7 @@ export class Request {
 
         let target = this.config.baseURL + url
         if (Object.keys(resolveConfig.data).length) {
-          const urlParams = Params.stringify(resolveConfig.data)
+          const urlParams = stringify(resolveConfig.data)
           if (url.includes('?')) {
             target += `&${urlParams}`
           } else {
@@ -120,12 +120,13 @@ export class Request {
 
   public async fetch<T>(
     url: string,
-    config: RequestConfig = Object.assign({}, this.config)
+    config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
+    preserve(config, this.config)
     config.url = url
     const resolveConfig = await this.useRequestInterceptors(config)
 
-    return this.useResponseInterceptors(
+    return await this.useResponseInterceptors(
       new Promise<ResponseConfig<T>>((resolve, reject) => {
         const xhr = getXHR(resolve, reject)
 
@@ -147,25 +148,25 @@ export class Request {
 
   public async post<T>(
     url: string,
-    config: RequestConfig = Object.assign({}, this.config)
+    config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
     config.method = 'POST'
-    return this.fetch(url, config)
+    return await this.fetch(url, config)
   }
 
   public async put<T>(
     url: string,
-    config: RequestConfig = Object.assign({}, this.config)
+    config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
     config.method = 'PUT'
-    return this.fetch(url, config)
+    return await this.fetch(url, config)
   }
 
   public async delete<T>(
     url: string,
-    config: RequestConfig = Object.assign({}, this.config)
+    config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
     config.method = 'DELETE'
-    return this.fetch(url, config)
+    return await this.fetch(url, config)
   }
 }

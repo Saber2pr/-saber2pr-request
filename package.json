@@ -1,6 +1,6 @@
 {
   "name": "@saber2pr/request",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "> 提供全局拦截器配置",
   "repository": {
     "type": "git",
@@ -16,7 +16,8 @@
   "scripts": {
     "start": "tsc --watch",
     "dev": "rollup -c --watch",
-    "serve": "node ./example/serve.js"
+    "serve": "node ./example/serve.js",
+    "test": "node lib/test/test.js"
   },
   "keywords": [
     "xhr",
