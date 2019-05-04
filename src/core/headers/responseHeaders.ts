@@ -5,6 +5,8 @@
  * @Last Modified time: 2019-05-02 20:45:09
  */
 export type ResponseHeaderNames =
+  | 'Access-Control-Allow-Headers'
+  | 'Access-Control-Allow-Methods'
   | 'Access-Control-Allow-Credentials'
   | 'Access-Control-Allow-Origin'
   | 'Accept-Patch'
