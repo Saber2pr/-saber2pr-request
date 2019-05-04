@@ -13,4 +13,5 @@ export interface RequestConfig {
   data?: Object
   method?: string
   url?: string
+  withCredentials?: boolean
 }

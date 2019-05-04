@@ -2,7 +2,7 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:34:18
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-03 23:21:56
+ * @Last Modified time: 2019-05-04 10:11:17
  */
 import { RequestHeaderNames } from './headers/requestHeaders'
 import { getXHR } from './XMLHttpRequest'
@@ -18,11 +18,14 @@ export class Request {
     Object.assign(this.config, config)
   }
 
-  private config: Readonly<RequestConfig> = {
-    baseURL: '',
-    headers: {},
+  private readonly config: Readonly<RequestConfig> = {
     timeout: 5000,
-    method: 'GET'
+    headers: {},
+    baseURL: '',
+    data: {},
+    method: 'GET',
+    url: '',
+    withCredentials: false
   }
 
   public interceptors = new Interceptor()
@@ -47,6 +50,13 @@ export class Request {
     } else {
       setTimeout(() => onTimeout(`[timeout]: ${timeout}`), timeout)
     }
+  }
+
+  private setCredentials(
+    XHR: XMLHttpRequest,
+    withCredentials: boolean = this.config.withCredentials
+  ) {
+    XHR.withCredentials = withCredentials
   }
 
   private async useRequestInterceptors(
@@ -87,12 +97,14 @@ export class Request {
     return this.useResponseInterceptors(
       new Promise<ResponseConfig<T>>((resolve, reject) => {
         const xhr = getXHR(resolve, reject)
+        this.setCredentials(xhr, config.withCredentials)
+
         let target = this.config.baseURL + url
 
         this.setHeaders(xhr, resolveConfig.headers)
         this.setTimeout(xhr, resolveConfig.timeout, reject)
 
-        if (resolveConfig.data) {
+        if (Object.keys(resolveConfig.data).length) {
           const urlParams = Params.stringify(resolveConfig.data)
           if (url.includes('?')) {
             target += `&${urlParams}`
@@ -117,6 +129,8 @@ export class Request {
     return this.useResponseInterceptors(
       new Promise<ResponseConfig<T>>((resolve, reject) => {
         const xhr = getXHR(resolve, reject)
+        this.setCredentials(xhr, config.withCredentials)
+
         const target = this.config.baseURL + url
 
         this.setHeaders(xhr, resolveConfig.headers)
