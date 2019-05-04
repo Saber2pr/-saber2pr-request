@@ -2,7 +2,7 @@
  * @Author: saber2pr 
  * @Date: 2019-05-03 21:16:23 
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-03 23:19:44
+ * @Last Modified time: 2019-05-04 10:59:48
  */
 const {
   Koa
@@ -10,12 +10,10 @@ const {
 
 Koa().use(async (ctx, next) => {
     ctx.response.setHeader('access-control-allow-origin', '*')
-    ctx.response.setHeader('Content-Language', 'json')
-    ctx.response.setHeader('Last-Modified', '2222')
+    ctx.response.setHeader('Content-Type', 'application/json')
     ctx.response.writeHead(200, {
-      'Pragma': '222',
-      'Expires': '122',
-      'Access-Control-Allow-Methods': 'PUT,DELETE'
+      'Access-Control-Allow-Methods': 'PUT,DELETE',
+      'Access-Control-Allow-Credentials': 'true'
     })
 
     console.log(ctx.request.url)

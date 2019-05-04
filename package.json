@@ -1,6 +1,6 @@
 {
   "name": "@saber2pr/request",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "> 提供全局拦截器配置",
   "repository": {
     "type": "git",
