@@ -60,25 +60,21 @@ export class Request {
     XHR.withCredentials = withCredentials
   }
 
-  private async useRequestInterceptors(
-    config: RequestConfig
-  ): Promise<RequestConfig> {
-    return this.interceptors.requestInterceptors.interceptors.reduce(
+  private useRequestInterceptors = async (config: RequestConfig) =>
+    await this.interceptors.requestInterceptors.interceptors.reduce(
       (pre, cur) => cur(pre),
       config
     )
-  }
 
-  private async useResponseInterceptors(
+  private useResponseInterceptors = async (
     resultPromise: Promise<ResponseConfig<any>>
-  ): Promise<ResponseConfig<any>> {
-    return resultPromise.then(result =>
+  ) =>
+    await resultPromise.then(result =>
       this.interceptors.responseInterceptors.interceptors.reduce(
         (pre, cur) => cur(pre),
         result
       )
     )
-  }
 
   public async get<T>(url: string): Promise<ResponseConfig<T>>
   public async get<T>(
@@ -94,28 +90,28 @@ export class Request {
     config.url = url
     const resolveConfig = await this.useRequestInterceptors(config)
 
-    return this.useResponseInterceptors(
-      new Promise<ResponseConfig<T>>((resolve, reject) => {
-        const xhr = getXHR(resolve, reject)
+    const resultPromise = new Promise<ResponseConfig<T>>((resolve, reject) => {
+      const xhr = getXHR(resolve, reject)
 
-        let target = this.config.baseURL + url
-        if (Object.keys(resolveConfig.data).length) {
-          const urlParams = stringify(resolveConfig.data)
-          if (url.includes('?')) {
-            target += `&${urlParams}`
-          } else {
-            target += `?${urlParams}`
-          }
+      let target = this.config.baseURL + url
+      if (Object.keys(resolveConfig.data).length) {
+        const urlParams = stringify(resolveConfig.data)
+        if (url.includes('?')) {
+          target += `&${urlParams}`
+        } else {
+          target += `?${urlParams}`
         }
-        xhr.open(config.method, target)
+      }
+      xhr.open(config.method, target)
 
-        this.setCredentials(xhr, config.withCredentials)
-        this.setHeaders(xhr, resolveConfig.headers)
-        this.setTimeout(xhr, resolveConfig.timeout, reject)
+      this.setCredentials(xhr, config.withCredentials)
+      this.setHeaders(xhr, resolveConfig.headers)
+      this.setTimeout(xhr, resolveConfig.timeout, reject)
 
-        xhr.send()
-      })
-    )
+      xhr.send()
+    })
+
+    return await this.useResponseInterceptors(resultPromise)
   }
 
   public async fetch<T>(
@@ -126,24 +122,24 @@ export class Request {
     config.url = url
     const resolveConfig = await this.useRequestInterceptors(config)
 
-    return await this.useResponseInterceptors(
-      new Promise<ResponseConfig<T>>((resolve, reject) => {
-        const xhr = getXHR(resolve, reject)
+    const resultPromise = new Promise<ResponseConfig<T>>((resolve, reject) => {
+      const xhr = getXHR(resolve, reject)
 
-        const target = this.config.baseURL + url
-        let body = null
-        if (resolveConfig.data) {
-          body = JSON.stringify(resolveConfig.data)
-        }
-        xhr.open(config.method || this.config.method, target)
+      const target = this.config.baseURL + url
+      let body = null
+      if (resolveConfig.data) {
+        body = JSON.stringify(resolveConfig.data)
+      }
+      xhr.open(config.method || this.config.method, target)
 
-        this.setCredentials(xhr, config.withCredentials)
-        this.setHeaders(xhr, resolveConfig.headers)
-        this.setTimeout(xhr, resolveConfig.timeout, reject)
+      this.setCredentials(xhr, config.withCredentials)
+      this.setHeaders(xhr, resolveConfig.headers)
+      this.setTimeout(xhr, resolveConfig.timeout, reject)
 
-        xhr.send(body)
-      })
-    )
+      xhr.send(body)
+    })
+
+    return await this.useResponseInterceptors(resultPromise)
   }
 
   public async post<T>(
