@@ -1,3 +1,5 @@
-import { Request } from './core/saber-request'
+import { Request } from './core'
 
 export default new Request()
+
+export * from './core'
