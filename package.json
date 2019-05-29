@@ -4,7 +4,7 @@
   "description": "> 提供全局拦截器配置",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Saber2pr/-saber2pr-request.git"
+    "url": "git+https://github.com/Saber2pr/request.git"
   },
   "author": "saber2pr",
   "license": "ISC",
