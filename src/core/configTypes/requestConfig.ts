@@ -10,7 +10,7 @@ export interface RequestConfig {
   timeout?: number
   headers?: Partial<Record<RequestHeaderNames, string>>
   baseURL?: string
-  data?: Object
+  params?: Object
   method?: string
   url?: string
   withCredentials?: boolean

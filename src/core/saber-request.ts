@@ -23,7 +23,7 @@ export class Request {
     timeout: 5000,
     headers: {},
     baseURL: '',
-    data: {},
+    params: {},
     method: 'GET',
     url: '',
     withCredentials: false
@@ -94,8 +94,8 @@ export class Request {
       const xhr = getXHR(resolve, reject)
 
       let target = this.config.baseURL + url
-      if (Object.keys(resolveConfig.data).length) {
-        const urlParams = stringify(resolveConfig.data)
+      if (Object.keys(resolveConfig.params).length) {
+        const urlParams = stringify(resolveConfig.params)
         if (url.includes('?')) {
           target += `&${urlParams}`
         } else {
@@ -127,8 +127,8 @@ export class Request {
 
       const target = this.config.baseURL + url
       let body = null
-      if (resolveConfig.data) {
-        body = JSON.stringify(resolveConfig.data)
+      if (resolveConfig.params) {
+        body = JSON.stringify(resolveConfig.params)
       }
       xhr.open(config.method || this.config.method, target)
 
