@@ -48,6 +48,33 @@ new Request().fetch
 6. new Request().interceptors.response.use
 7. new Request().interceptors.responseInterceptors
 
+```ts
+import axios from '@saber2pr/request' // const axios = new Request()
+
+axios.interceptors.request.use(config => {
+  /** code **/
+
+  config.headers.Authorization =
+    'Basic ' + Base64.encode(`${username}:${password}`)
+
+  return config
+})
+
+axios.interceptors.response.use(res => {
+  switch (res.status) {
+    case 200:
+      return res
+
+    case 401:
+      push('/login')
+      break
+
+    default:
+      push('/error')
+  }
+})
+```
+
 ### 还需要说么。。
 
 使用 typescript 编码，不需要文档！qwq
