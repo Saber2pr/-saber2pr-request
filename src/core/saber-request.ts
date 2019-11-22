@@ -2,15 +2,15 @@
  * @Author: saber2pr
  * @Date: 2019-05-03 18:34:18
  * @Last Modified by: saber2pr
- * @Last Modified time: 2019-05-04 21:17:32
+ * @Last Modified time: 2019-11-22 10:46:01
  */
-import { RequestHeaderNames } from './headers/requestHeaders'
-import { getXHR } from './XMLHttpRequest'
-import { stringify } from './utils/stringify'
-import { RequestConfig } from './configTypes/requestConfig'
-import { Interceptor } from './Interceptor'
-import { ResponseConfig } from './configTypes/responseConfig'
-import { preserve } from './utils/preserve'
+import { RequestHeaderNames } from "./headers/requestHeaders"
+import { getXHR } from "./XMLHttpRequest"
+import { stringify } from "./utils/stringify"
+import { RequestConfig } from "./configTypes/requestConfig"
+import { Interceptor } from "./Interceptor"
+import { ResponseConfig } from "./configTypes/responseConfig"
+import { preserve } from "./utils/preserve"
 
 export class Request {
   public constructor()
@@ -18,14 +18,16 @@ export class Request {
   public constructor(config: RequestConfig = {}) {
     Object.assign(this.config, config)
   }
+  static create = (config: RequestConfig = {}) => new Request(config)
+  create = (config: RequestConfig = {}) => new Request(config)
 
   private readonly config: Readonly<RequestConfig> = {
     timeout: 5000,
     headers: {},
-    baseURL: '',
+    baseURL: "",
     params: {},
-    method: 'GET',
-    url: '',
+    method: "GET",
+    url: "",
     withCredentials: false
   }
 
@@ -47,7 +49,7 @@ export class Request {
     const timeout = Timeout || this.config.timeout
     if (XHR.timeout) {
       XHR.timeout = timeout
-      XHR.addEventListener('timeout', () => onTimeout(`[timeout]: ${timeout}`))
+      XHR.addEventListener("timeout", () => onTimeout(`[timeout]: ${timeout}`))
     } else {
       setTimeout(() => onTimeout(`[timeout]: ${timeout}`), timeout)
     }
@@ -86,7 +88,7 @@ export class Request {
     config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
     preserve(config, this.config)
-    config.method = 'GET'
+    config.method = "GET"
     config.url = url
     const resolveConfig = await this.useRequestInterceptors(config)
 
@@ -96,7 +98,7 @@ export class Request {
       let target = this.config.baseURL + url
       if (Object.keys(resolveConfig.params).length) {
         const urlParams = stringify(resolveConfig.params)
-        if (url.includes('?')) {
+        if (url.includes("?")) {
           target += `&${urlParams}`
         } else {
           target += `?${urlParams}`
@@ -146,7 +148,7 @@ export class Request {
     url: string,
     config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
-    config.method = 'POST'
+    config.method = "POST"
     return await this.fetch(url, config)
   }
 
@@ -154,7 +156,7 @@ export class Request {
     url: string,
     config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
-    config.method = 'PUT'
+    config.method = "PUT"
     return await this.fetch(url, config)
   }
 
@@ -162,7 +164,7 @@ export class Request {
     url: string,
     config: RequestConfig = {}
   ): Promise<ResponseConfig<T>> {
-    config.method = 'DELETE'
+    config.method = "DELETE"
     return await this.fetch(url, config)
   }
 }
