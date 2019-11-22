@@ -4,8 +4,6 @@
 
 > 提供全局拦截器配置
 
-`[size]: [7.44kb]`
-
 # 为什么？
 
 已经有 axios...
@@ -49,13 +47,13 @@ new Request().fetch
 7. new Request().interceptors.responseInterceptors
 
 ```ts
-import axios from '@saber2pr/request' // const axios = new Request()
+import axios from "@saber2pr/request" // const axios = new Request()
 
 axios.interceptors.request.use(config => {
   /** code **/
 
   config.headers.Authorization =
-    'Basic ' + Base64.encode(`${username}:${password}`)
+    "Basic " + Base64.encode(`${username}:${password}`)
 
   return config
 })
@@ -66,11 +64,11 @@ axios.interceptors.response.use(res => {
       return res
 
     case 401:
-      push('/login')
+      push("/login")
       break
 
     default:
-      push('/error')
+      push("/error")
   }
 })
 ```
