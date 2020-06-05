@@ -1,5 +1,5 @@
-import { Request } from './core'
+import { Request } from "./core"
 
 export default new Request()
 
-export * from './core'
+export * from "./core"
